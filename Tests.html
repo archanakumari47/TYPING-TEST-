@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests</title>
+
+</head>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            /* background-color:palevioletred; */
+            background: url(background)no-repeat center center ;
+            background-size:cover;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            background-color: azure;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        h2{
+            color: red;
+        }
+</style>
+<body>
+    <div class="container">
+        <h2>Typing Speed Test</h2>
+        <hr>
+        <p id="text">The quick brown fox jumps over the lazy dog.<br>
+             It lands gracefully and dashes ahead,<br>
+            searching for its next adventure.<br>
+            The sun shines brightly as the fox moves through<br>
+            the green fields, its fur glistening under the golden light.<br>
+            Meanwhile, the lazy dog stretches and yawns,<br> 
+            enjoying the warmth of the afternoon. Birds <br>
+            chirp in the distance as the fox continues its<br> 
+            journey, leaping over logs and dodging bushes.<br>
+            The quick brown fox never stops, <br>
+            always exploring, always running, while the lazy <br>
+            dog watches from afar, too comfortable to move.
+        </p>
+        <textarea id="inputText" placeholder="Start typing here..."></textarea>
+        <p>Time Left: <span id="timer">60</span> seconds</p>
+        <button onclick="startTest()">Start</button>
+        <button onclick="checkSpeed()">Check Speed</button>
+        <p class="result" id="result"></p>
+    </div>
+     
+    <script>
+        let startTime, timerInterval;
+        function startTest() {
+            document.getElementById("inputText").value = "";
+            document.getElementById("inputText").disabled = false;
+            document.getElementById("inputText").focus();
+            document.getElementById("result").innerText = "";
+            document.getElementById("timer").innerText = "300";
+            startTime = new Date().getTime();
+
+            let timeLeft = 300;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById("timer").innerText = timeLeft;
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    checkSpeed();
+                }
+            }, 1000);
+        }
+
+        function checkSpeed() {
+            document.getElementById("inputText").disabled = true;
+            clearInterval(timerInterval);
+            let textEntered = document.getElementById("inputText").value.trim();
+            let wordCount = textEntered.split(/\s+/).length;
+            let speed = Math.round((wordCount / 300) * 60);
+            document.getElementById("result").innerText = `Typing Speed: ${speed} words per minute`;
+        }
+    </script>
+</body>
+</html>
